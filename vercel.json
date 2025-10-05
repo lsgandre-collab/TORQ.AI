@@ -2,6 +2,10 @@
   "framework": "nextjs",
   "rewrites": [
     {
+      "source": "/test",
+      "destination": "/app/test/page.js"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
