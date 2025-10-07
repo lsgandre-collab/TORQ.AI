@@ -1,4 +1,4 @@
-'use client';  // Pra interatividade
+'use client';
 
 import { useState } from 'react';
 
@@ -7,41 +7,78 @@ export default function TestPage() {
   const [data, setData] = useState(null);
   const [chatMessage, setChatMessage] = useState('');
   const [chatResponse, setChatResponse] = useState('');
+  const [fixConfirmed, setFixConfirmed] = useState(false);
+  const [leaderboard, setLeaderboard] = useState([{ name: 'João', fixes: 87 }, { name: 'Maria', fixes: 65 }]); // Simulado
 
   const redFlags = ['política', 'presidente', 'eleição', 'governo', 'congresso', 'guerra', 'Ucrânia', 'Gaza', 'COVID', 'vírus', 'vacina', 'bitcoin', 'cripto', 'dólar', 'economia', 'clima', 'aquecimento', 'filosofia', 'religião', 'Deus'];
 
   const handleLoadData = async () => {
-    // Liga API real do NHTSA pra VIN (dados de óleo/freio/torque/recalls simulados por agora, liga real depois)
-    const response = await fetch(`https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/${vin}?format=json`);
-    const result = await response.json();
-    setData(result.Results);
-    alert(`Óleo: 5.7L 5W-30 (simulado)\\nFreio: DOT 4 0.75L\\nTorque: 25 Nm alternador\\nRecalls: Simulado - bomba de combustível`);
+    // Simula NHTSA (depois liga real)
+    setData({
+      oil: '5.7L 5W-30',
+      brake: 'DOT 4 0.75L',
+      torque: '25 Nm alternador',
+      recalls: 'Simulado - bomba de combustível',
+    });
   };
 
   const handleChat = () => {
-    // Filtro de red flags
     if (redFlags.some(flag => chatMessage.toLowerCase().includes(flag))) {
       setChatResponse('Desculpa, só falo de carros, peças e consertos. Pergunte sobre alternador ou freio!');
-    } else {
-      // Simula Grok (depois liga API real)
-      setChatResponse('Resposta do Torq: Verifique o sensor ABS - 87% resolvido. Part number: 12345-A. Tempo: 1h45.');
+      return;
     }
+    // Simula Grok (depois liga API)
+    setChatResponse('Resposta do Torq: Verifique o sensor ABS - 87% resolvido. Part number: 12345-A. Tempo: 1h45.');
   };
 
   const handleConfirmFix = () => {
-    // Simula upload de foto e confirmed fix
+    setFixConfirmed(true);
     alert('Confirmed Fix: VIN salvado, foto uploadada (simulado). Ganhou 1 ponto!');
   };
 
   return (
-    <div style={{ background: 'black', color: 'white', padding: '20px', fontFamily: 'Arial' }}>
-      <h1 style={{ color: 'orange' }}>Torq.ai - Test Dashboard</h1>
-      <input type="text" placeholder="Enter VIN (e.g., 1HGCM82633A003456)" value={vin} onChange={(e) => setVin(e.target.value)} style={{ marginBottom: '10px', display: 'block', padding: '10px', width: '100%' }} />
-      <button onClick={handleLoadData} style={{ background: 'orange', color: 'black', padding: '10px', marginRight: '10px', border: 'none' }}>Load Data</button>
-      <input type="text" placeholder="Pergunte sobre o problema (ex: ABS light on)" value={chatMessage} onChange={(e) => setChatMessage(e.target.value)} style={{ marginBottom: '10px', display: 'block', padding: '10px', width: '100%' }} />
-      <button onClick={handleChat} style={{ background: 'gray', color: 'white', padding: '10px', border: 'none' }}>Pergunte ao Torq</button>
-      <p>{chatResponse}</p>
-      <button onClick={handleConfirmFix} style={{ background: 'green', color: 'white', padding: '10px', border: 'none' }}>Confirm Fix (with photo)</button>
+    <div className="min-h-screen bg-black text-white p-6 font-sans">
+      <header className="flex items-center justify-center mb-6">
+        <h1 className="text-orange-500 text-3xl font-bold">Torq.ai - Dashboard</h1>
+      </header>
+      <main className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-gray-800 p-4 rounded-lg">
+          <input 
+            type="text" 
+            placeholder="Enter VIN (e.g., 1HGCM82633A003456)" 
+            value={vin} 
+            onChange={(e) => setVin(e.target.value)} 
+            className="bg-gray-900 text-white p-2 w-full rounded mb-4" 
+          />
+          <button onClick={handleLoadData} className="bg-orange-500 text-black p-2 rounded w-full mb-2">Load Data</button>
+          {data && (
+            <div className="text-sm">
+              <p>Óleo: {data.oil}</p>
+              <p>Freio: {data.brake}</p>
+              <p>Torque: {data.torque}</p>
+              <p>Recalls: {data.recalls}</p>
+            </div>
+          )}
+          <button onClick={handleConfirmFix} className="bg-green-500 text-white p-2 rounded w-full mt-4">Confirm Fix (with photo)</button>
+        </div>
+        <div className="bg-gray-800 p-4 rounded-lg">
+          <input 
+            type="text" 
+            placeholder="Pergunte sobre o problema (ex: ABS light on)" 
+            value={chatMessage} 
+            onChange={(e) => setChatMessage(e.target.value)} 
+            className="bg-gray-900 text-white p-2 w-full rounded mb-4" 
+          />
+          <button onClick={handleChat} className="bg-gray-500 text-white p-2 rounded w-full mb-2">Pergunte ao Torq</button>
+          <p className="text-sm">{chatResponse}</p>
+        </div>
+      </main>
+      <footer className="mt-6">
+        <h2 className="text-center text-orange-500 text-xl mb-2">Leaderboard</h2>
+        <ul className="list-disc pl-6">
+          {leaderboard.map((user, i) => <li key={i} className="text-sm">{user.name} - {user.fixes} fixes</li>)}
+        </ul>
+      </footer>
     </div>
   );
 }
