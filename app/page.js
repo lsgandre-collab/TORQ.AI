@@ -1,6 +1,8 @@
 'use client';
 
-import Link from 'next/link';
+import { useState } from 'react';
+
+export default function TestPage() {import Link from 'next/link';
 
 export default function Home() {
   return (
