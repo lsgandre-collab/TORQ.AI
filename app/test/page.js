@@ -82,3 +82,86 @@ export default function TestPage() {
     </div>
   );
 }
+'use client';
+
+import { useState } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, useGLTF } from '@react-three/drei';
+
+export default function TestPage() {
+  const [vin, setVin] = useState('');
+  const [data, setData] = useState(null);
+  const [chatMessage, setChatMessage] = useState('');
+  const [chatResponse, setChatResponse] = useState('');
+  const [show3D, setShow3D] = useState(false);
+
+  const handleLoadData = () => {
+    // Simula (depois NHTSA)
+    setData({
+      oil: '5.7L 5W-30',
+      brake: 'DOT 4 0.75L',
+      torque: '25 Nm',
+      recalls: 'Bomba de combustível',
+    });
+  };
+
+  const handleChat = () => {
+    setChatResponse('Verifique sensor ABS - 87% resolvido.');
+  };
+
+  const handleConfirmFix = () => {
+    alert('Confirmed Fix: Ganhou 1 ponto!');
+  };
+
+  const ThreeDModel = () => {
+    const { scene } = useGLTF('/models/alternator.glb');  // Baixe um GLB grátis de TurboSquid e adicione no public/models
+    return <primitive object={scene} />;
+  };
+
+  return (
+    <div className="min-h-screen bg-black text-white p-6">
+      <header className="text-center mb-6">
+        <h1 className="text-orange-500 text-3xl font-bold">Torq.ai - Dashboard</h1>
+        <p className="text-gray-400">O torque que pensa</p>
+      </header>
+      <div className="max-w-4xl mx-auto grid gap-6">
+        <input className="bg-gray-800 p-2 rounded w-full" placeholder="Enter VIN/Plate/State" value={vin} onChange={(e) => setVin(e.target.value)} />
+        <button onClick={handleLoadData} className="bg-orange-500 p-2 rounded text-black">Load Data</button>
+        {data && (
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-gray-800 p-4 rounded">
+              <h2 className="text-orange-500 mb-2">Manutenção Rápida</h2>
+              <p>Óleo: {data.oil}</p>
+              <p>Freio: {data.brake}</p>
+              <p>Torque: {data.torque}</p>
+            </div>
+            <div className="bg-gray-800 p-4 rounded">
+              <h2 className="text-orange-500 mb-2">Alertas</h2>
+              <p>Recalls: {data.recalls}</p>
+            </div>
+          </div>
+        )}
+        <input className="bg-gray-800 p-2 rounded w-full" placeholder="Enter Codes/Components/Symptoms" value={chatMessage} onChange={(e) => setChatMessage(e.target.value)} />
+        <button onClick={handleChat} className="bg-gray-500 p-2 rounded text-white">Pergunte ao Torq</button>
+        <p>{chatResponse}</p>
+        <button onClick={handleConfirmFix} className="bg-green-500 p-2 rounded text-white">Confirm Fix</button>
+        <button onClick={() => setShow3D(!show3D)} className="bg-blue-500 p-2 rounded text-white">Ver 3D</button>
+        {show3D && (
+          <div className="h-64 bg-gray-800 rounded">
+            <Canvas>
+              <ambientLight />
+              <pointLight position={[10, 10, 10]} />
+              <OrbitControls />
+              <ThreeDModel />
+            </Canvas>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function ThreeDModel() {
+  const { scene } = useGLTF('/models/alternator.glb'); // Adicione um GLB na pasta public/models (baixe grátis de TurboSquid)
+  return <primitive object={scene} />;
+}
