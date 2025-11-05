@@ -35,7 +35,7 @@ export default function TestPage() {
       <header className="text-center mb-6">
         <h1 className="text-orange-500 text-4xl font-bold">Torq.ai - Dashboard</h1>
       </header>
-      <main className="space-y-6 max-w-4xl mx-auto">
+      <main className="max-w-4xl mx-auto space-y-6">
         <div className="bg-gray-800 p-4 rounded">
           <input className="bg-gray-900 p-2 w-full rounded mb-2 text-white" placeholder="Enter VIN" value={vin} onChange={(e) => setVin(e.target.value)} />
           <button onClick={handleLoadData} className="bg-orange-500 p-2 w-full rounded text-black">Load Data</button>
@@ -81,7 +81,7 @@ export default function TestPage() {
               <pointLight position={[10, 10, 10]} />
               <OrbitControls />
               <mesh>
-                <boxGeometry args={[1, 1, 1]} />
+                <boxGeometry args=[1, 1, 1] />
                 <meshStandardMaterial color="hotpink" />
               </mesh>
             </Canvas>
