@@ -28,11 +28,12 @@ export default function TestPage() {
   return (
     <div className="min-h-screen bg-black text-white p-6">
       <header className="text-center mb-8">
-        <h1 className="text-orange-500 text-4xl font-bold">Torq.ai - Dashboard</h1>
+        <h1 className="text-orange-500 text-4xl font-bold">Torq.ai</h1>
         <p className="text-gray-400">Diagnóstico rápido e inteligente</p>
       </header>
 
       <div className="max-w-4xl mx-auto space-y-6">
+        {/* VIN Input */}
         <div className="bg-gray-800 p-5 rounded-lg">
           <input
             type="text"
@@ -49,6 +50,7 @@ export default function TestPage() {
           </button>
         </div>
 
+        {/* Dados do Veículo */}
         {data && (
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-gray-800 p-5 rounded-lg">
@@ -64,6 +66,7 @@ export default function TestPage() {
           </div>
         )}
 
+        {/* Chat */}
         <div className="bg-gray-800 p-5 rounded-lg">
           <input
             type="text"
@@ -81,6 +84,7 @@ export default function TestPage() {
           {chatResponse && <p className="mt-3 text-sm text-gray-300">{chatResponse}</p>}
         </div>
 
+        {/* Ações */}
         <div className="flex gap-4">
           <button
             onClick={handleConfirmFix}
@@ -93,6 +97,7 @@ export default function TestPage() {
           </button>
         </div>
 
+        {/* Leaderboard */}
         <div className="bg-gray-800 p-5 rounded-lg">
           <h2 className="text-orange-500 text-xl mb-3 text-center">Leaderboard</h2>
           <ul className="space-y-2 text-sm">
